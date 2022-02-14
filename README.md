@@ -29,3 +29,8 @@ mecab of 0.996
 ```
 $ pip install mecab-python3
 ```
+
+# CI
+
+- [ソースコードのクオリティを上げてくれる "Codacy"](https://tech.hey.jp/entry/2021/11/17/185608)
+
