@@ -24,6 +24,49 @@ mecab of 0.996
 
 ```
 
+固有表現に強い辞書の`mecab-ipadic-neologd`をインストールする。
+
+```Bash
+$ git clone https://github.com/neologd/mecab-ipadic-neologd.git
+$ cd mecab-ipadic-neologd
+
+$ sudo apt install --reinstall build-essential
+$ sudo bin/install-mecab-ipadic-neologd
+```
+
+`bin/install-mecab-ipadic-neologd`を実行すると、以下のようなログが出てくる。
+最終的には`mecab-ipadic-neologd`がインストールされているパスが表示される。
+
+```Bash
+[install-mecab-ipadic-NEologd] : Usage of mecab-ipadic-NEologd is here.
+Usage:
+    $ mecab -d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd ...
+
+[install-mecab-ipadic-NEologd] : Finish..
+[install-mecab-ipadic-NEologd] : Finish..
+```
+
+`mecab-ipadic-neologd`のインストール場所が、ipadicの場所と異なるため移動させる。
+
+```Bash
+$ sudo mv /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd /var/lib/mecab/dic
+```
+
+`MeCab`の設定をする必要がある。
+設定ファイルは`/etc/mecabrc`にある。
+
+```Bash
+;
+; Configuration file of MeCab
+;
+
+# セミコロンを追加してコメントアウト
+; dicdir = /var/lib/mecab/dic/debian
+
+# 以下の表を追加する
+dicdir = /var/lib/mecab/dic/mecab-ipadic-neologd
+```
+
 `mecab-python`の導入
 
 ```
