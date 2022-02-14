@@ -73,6 +73,10 @@ dicdir = /var/lib/mecab/dic/mecab-ipadic-neologd
 $ pip install mecab-python3
 ```
 
+## Cabocha Installation
+
+- [Cabochaのインストール](https://qiita.com/kado_u/items/e736600f8d295afb8bd9#cabocha%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
+
 # CI
 
 - [ソースコードのクオリティを上げてくれる "Codacy"](https://tech.hey.jp/entry/2021/11/17/185608)
