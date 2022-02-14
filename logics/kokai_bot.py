@@ -2,6 +2,7 @@
 import itertools
 import collections
 import MeCab
+from pyparsing import Word
 
 from .base import KokkaiBase
 # from .speech import SpeechRecordList
@@ -140,6 +141,7 @@ def get_meeting_records(comment, speaker, from_date, until_date):
 
         meeting_records += meeting_record
 
+        print("count", count, next_position)
         if next_position is None:
             break
 
@@ -148,7 +150,10 @@ def get_meeting_records(comment, speaker, from_date, until_date):
     return meeting_records
     # print("meeting_records", len(meeting_records))
 
-mecab = MeCab.Tagger ("-Ochasen")
+# mecab = MeCab.Tagger ("-Ochasen")
+mecab = MeCab.Tagger(
+    "-d /var/lib/mecab/dic/mecab-ipadic-neologd"
+)
 
 def text_parse(text):
     return mecab.parse(text)
@@ -163,19 +168,35 @@ def get_nouns_in_speechs(speechs):
     nouns_list = []
     for s in speechs:
 
-        nouns = [
-            line.split()[0] for line in text_parse(s).splitlines()
-            if "名詞" in line.split()[-1].split("-")[0]
-            if not ("名詞-数" in line.split()[-1])
+        parts = ["名詞"]
 
-            # line for line in text_parse(s).splitlines()
-            # if "名詞" in line.split()[-1]
-        ]
+        # part_options = ["非自立", "数", "代名詞", "接尾"]
+        # part_options = ["固有名詞", "一般"]
+        part_options = ["固有名詞"]
 
-        # print(nouns)
+        nouns = []
 
-        # print(text_parse(s))
-        # print(s, text_parse(s))
+        node = mecab.parseToNode(s)
+        while node:
+            # 単語を取得
+            if node.feature.split(",")[6] == '*':
+                word = node.surface
+            else:
+                word = node.feature.split(",")[6]
+
+            # 品詞を取得
+            part = node.feature.split(",")[0]
+
+            # 品詞のオプションを取得
+            part_option = node.feature.split(",")[1]
+
+            if (part in parts) and (part_option in part_options):
+            # if (part in parts) and (part_option not in part_options):
+
+                nouns.append(word)
+                if word == "日本":
+                    print("node.feature", node.feature)
+            node = node.next
 
         nouns_list.append(nouns)
 
@@ -214,15 +235,12 @@ def main(comment, speaker, from_date, until_date):
             groups.append(group)
 
         # print("m", "speech" in speech_record)
-        print("--" * 30)
+    print("--" * 30)
     
     # print("speakers", speakers)
     speakers_counter = get_list_counter(speakers)
-    print("speakers_counter", speakers_counter)
-    # print("most_common", speakers_counter.most_common())
-
-    # speaker = "萩生田光一"
-    # print([i for i, s in enumerate(speakers) if s == speaker])
+    top_five_speakers = speakers_counter.most_common()[:5]
+    print("top_five_speakers", top_five_speakers)
 
     groups_counter = get_list_counter(groups)
     print("groups_counter", groups_counter)
@@ -244,4 +262,41 @@ def main(comment, speaker, from_date, until_date):
     nouns_list_from_iterable_counter = get_list_counter(
         nouns_list_from_iterable
     )
-    print("nouns_list_from_iterable_counter", nouns_list_from_iterable_counter)
+    # print("nouns_list_from_iterable_counter", nouns_list_from_iterable_counter)
+    top_five_nouns_list = nouns_list_from_iterable_counter.most_common()[:5]
+    print("top_five_nouns_list", top_five_nouns_list)
+
+    # 発言数が5位以内の議員たちが5位以内の頻度もある単語を何回言ったかを集計
+    rank_words = {}
+    for _, s in enumerate(top_five_speakers):
+        # print(i, s[0])
+
+        speaker_name = s[0]
+        speakers_idx = [
+            i for i, s in enumerate(speakers) if s == speaker_name
+        ]
+
+        nouns_from_speaker = [
+            nouns_list[idx] for idx in speakers_idx
+        ]
+
+        for top_five_word in top_five_nouns_list:
+            for nouns in nouns_from_speaker:
+                # print("nouns", top_five_word, nouns)
+
+                word = top_five_word[0]
+                if word in nouns:
+                    # rank_words[speaker_name] += 1
+                    if speaker_name in rank_words:
+
+                        if word in rank_words[speaker_name]:
+                            rank_words[speaker_name][word] += 1
+                        else:
+                            rank_words[speaker_name][word] = 1
+                        # rank_words[speaker_name] += 1
+                    else:
+                        rank_words[speaker_name] = {}
+
+            # print(word in nouns_from_speaker)
+
+    print("rank_words", rank_words)

@@ -37,6 +37,8 @@ class KokkaiBase:
             path = path.replace("/", "")
 
         url = self.HOST + path
+        print("url", url)
+
         try:
             req = Request(url)
             with urlopen(req) as res:
