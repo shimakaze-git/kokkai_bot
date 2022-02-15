@@ -107,11 +107,11 @@ def get_meeting_records(comment, speaker, from_date, until_date):
     # meeting_records = results["meetingRecord"]
     meeting_records = []
 
-    comment = "DX"
-    speaker = ""
+    # comment = "DX"
+    # speaker = ""
 
-    from_date = ""
-    until_date = ""
+    # from_date = ""
+    # until_date = ""
 
     count = 1
     # count = 14
@@ -133,8 +133,7 @@ def get_meeting_records(comment, speaker, from_date, until_date):
         # print("records_count", records_count)
 
         next_position = results["nextRecordPosition"]
-
-        # print("next_position", next_position)
+        print("next_position", next_position)
         # print("pos", 1 * count)
 
         meeting_record = results["meetingRecord"]
@@ -194,8 +193,8 @@ def get_nouns_in_speechs(speechs):
             # if (part in parts) and (part_option not in part_options):
 
                 nouns.append(word)
-                if word == "日本":
-                    print("node.feature", node.feature)
+                # if word == "日本":
+                #     print("node.feature", node.feature)
             node = node.next
 
         nouns_list.append(nouns)
@@ -300,3 +299,52 @@ def main(comment, speaker, from_date, until_date):
             # print(word in nouns_from_speaker)
 
     print("rank_words", rank_words)
+
+    print("会議録情報", "会議録情報" in speakers)
+
+    # 全ての議員たちが5位以内の頻度もある単語を何回言ったかを集計
+    all_count_words = {}
+    all_rank_words = {}
+    for _, s in enumerate(speakers):
+        # print(i, s[0])
+
+        speaker_name = s
+        speakers_idx = [
+            i for i, s in enumerate(speakers) if s == speaker_name
+        ]
+
+        nouns_from_speaker = [
+            nouns_list[idx] for idx in speakers_idx
+        ]
+
+        for top_five_word in top_five_nouns_list:
+            for nouns in nouns_from_speaker:
+                # print("nouns", top_five_word, nouns)
+
+                word = top_five_word[0]
+                if word in nouns:
+                    # rank_words[speaker_name] += 1
+                    if speaker_name in all_rank_words:
+
+                        if word in all_rank_words[speaker_name]:
+                            all_rank_words[speaker_name][word] += 1
+                        else:
+                            all_rank_words[speaker_name][word] = 1
+                        # rank_words[speaker_name] += 1
+                    else:
+                        all_rank_words[speaker_name] = {}
+
+                    # all_count_words
+                    if speaker_name in all_count_words:
+                        all_count_words[speaker_name] += 1
+                    else:
+                        all_count_words[speaker_name] = 1
+
+    # print("speakers : all_rank_words", all_rank_words)
+    print("speakers : all_count_words", all_count_words)
+    sorted_all_count_words = sorted(
+        all_count_words.items(),
+        key=lambda i: i[1],
+        reverse=True
+    )
+    print("sorted_all_count_words", sorted_all_count_words)

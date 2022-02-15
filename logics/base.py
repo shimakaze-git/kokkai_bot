@@ -29,6 +29,7 @@ class KokkaiBase:
             ['{}={}'.format(key, value) for key, value in params.items()]
         )
         query = "?" + query
+        print("query", query)
 
         return quote(query)
 

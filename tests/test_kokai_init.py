@@ -17,8 +17,8 @@ def test_comment_count_in_mouth():
     comment = ""
     speaker = ""
 
-    # from_date = "2022-01-01"
-    from_date = "2022-01-30"
+    from_date = "2022-01-01"
+    # from_date = "2022-01-30"
     until_date = "2022-01-31"
 
     main(comment, speaker, from_date, until_date)
