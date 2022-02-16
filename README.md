@@ -81,3 +81,6 @@ $ pip install mecab-python3
 
 - [ソースコードのクオリティを上げてくれる "Codacy"](https://tech.hey.jp/entry/2021/11/17/185608)
 
+# LINK
+
+- [IPAdicの品詞ID](https://so-zou.jp/software/tech/linguistics/language-processing/morpheme/mecab/pos-id-def.htm)
