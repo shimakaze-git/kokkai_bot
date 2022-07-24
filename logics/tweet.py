@@ -44,9 +44,10 @@ class Tweet:
         if account:
             tweet_text = "@{0} ".format(account) + tweet_text
 
-        self.twitter.statuses.update(
-            status=tweet_text
-        )
+        self.api.update_status(tweet_text)
+        # self.twitter.statuses.update(
+        #     status=tweet_text
+        # )
 
     def image_tweet(self, text: str, file_path: str):
         self.api.update_status_with_media(
@@ -187,7 +188,7 @@ class TweetStream(Tweet):
 stream = TweetStream()
 
 stream.tweet(
-    text="ツイート!!", account="shimakaze_soft"
+    text="BOTが起動するかどうかのテストする"
 )
 
 # 監視する対象の文字列

@@ -143,9 +143,9 @@ if __name__ == "__main__":
         )
 
         now = datetime.now()
-        now = datetime(
-            2022, 4, 5, 0, 0, 0, 0
-        )
+        # now = datetime(
+        #     2022, 4, 5, 0, 0, 0, 0
+        # )
 
         diff = (now - last_date).days
 

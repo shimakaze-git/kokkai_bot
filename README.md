@@ -2,6 +2,8 @@
 
 - https://github.com/shimakaze-git/kokkai-py
 
+- https://kokkai.ndl.go.jp/api.html
+
 # installation
 
 Mecabのインストール
