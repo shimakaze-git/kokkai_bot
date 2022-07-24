@@ -29,7 +29,7 @@ class KokkaiBase:
             ['{}={}'.format(key, value) for key, value in params.items()]
         )
         query = "?" + query
-        print("query", query)
+        # print("query", query)
 
         return quote(query)
 
@@ -38,7 +38,7 @@ class KokkaiBase:
             path = path.replace("/", "")
 
         url = self.HOST + path
-        print("url", url)
+        # print("url", url)
 
         try:
             req = Request(url)

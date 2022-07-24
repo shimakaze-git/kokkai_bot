@@ -133,14 +133,14 @@ def get_meeting_records(comment, speaker, from_date, until_date):
         # print("records_count", records_count)
 
         next_position = results["nextRecordPosition"]
-        print("next_position", next_position)
+        # print("next_position", next_position)
         # print("pos", 1 * count)
 
         meeting_record = results["meetingRecord"]
 
         meeting_records += meeting_record
 
-        print("count", count, next_position)
+        # print("count", count, next_position)
         if next_position is None:
             break
 
